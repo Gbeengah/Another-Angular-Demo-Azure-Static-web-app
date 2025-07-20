@@ -18,12 +18,13 @@ jobs:
       id-token: write
       contents: read
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
         with:
           submodules: true
           lfs: false
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: npm install
 
       - name: Build Angular App
@@ -37,8 +38,8 @@ jobs:
         id: idtoken
         with:
           script: |
-            const coredemo = require('@actions/core')
-            return await coredemo.getIDToken()
+            const core = require('@actions/core')
+            return await core.getIDToken()
           result-encoding: string
 
       - name: Build And Deploy
@@ -47,9 +48,9 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PURPLE_MOSS_0EE2F4C10 }}
           action: "upload"
-          app_location: "/"  # Root folder of your app
-          api_location: ""   # You’re not using serverless API functions
-          output_location: "dist/another-angular-demo"  # ✅ This is the fix
+          app_location: "/"  # path to Angular project (leave as / if in root)
+          api_location: ""   # leave empty if not using Azure Functions
+          output_location: "dist/another-angular-demo" # 👈 from your angular.json
           github_id_token: ${{ steps.idtoken.outputs.result }}
 
   close_pull_request_job:
@@ -58,7 +59,6 @@ jobs:
     name: Close Pull Request Job
     steps:
       - name: Close Pull Request
-        id: closepullrequest
         uses: Azure/static-web-apps-deploy@v1
         with:
           action: "close"
