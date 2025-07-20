@@ -32,8 +32,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build Angular App
-        run: npm run build
 
       - name: Install OIDC Client from Core Package
         run: npm install @actions/core@1.6.0 @actions/http-client
@@ -56,6 +54,7 @@ jobs:
           app_location: "/"  # root of the Angular project
           api_location: ""   # leave blank if no API
           output_location: "dist/another-angular-demo"  # must match angular.json
+          app_build_command: "npm run build -- --configuration production"  # 🔥 REQUIRED!
           github_id_token: ${{ steps.idtoken.outputs.result }}
 
   close_pull_request_job:
