@@ -53,7 +53,7 @@ jobs:
           action: "upload"
           app_location: "/"  # root of the Angular project
           api_location: ""   # leave blank if no API
-          output_location: "dist/another-angular-demo"  # must match angular.json
+          output_location: "dist/another-angular-demo/browser"  # must match angular.json
           app_build_command: "npm run build -- --configuration production"  # 🔥 REQUIRED!
           github_id_token: ${{ steps.idtoken.outputs.result }}
 
